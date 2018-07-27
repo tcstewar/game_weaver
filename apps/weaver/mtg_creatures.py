@@ -2,9 +2,15 @@ from mtg import *
         
 class Creature(Spell,Damageable):
     flying=0
+    reach = False
     dead=0
     protection=''
     firstStrike=0
+    defender = False
+    banding = False   # TODO: implement this
+    swampwalk = False  # TODO: implement this
+    forestwalk = False # TODO: implement this
+
     def doneCast(self):
         self._hasSummoningSickness=1
         self.power=self.getWithoutOverrides('power')
@@ -24,7 +30,8 @@ class Creature(Spell,Damageable):
     def doneSickness(self):
         self._hasSummoningSickness=0
         self.attack=None
-        self.setEditable('attack',self.setTarget,())
+        if not self.defender:
+            self.setEditable('attack',self.setTarget,())
     def setTarget(self,attack):
         if self.attack!=None: return
         if self.block!=None: return
@@ -49,7 +56,7 @@ class Creature(Spell,Damageable):
         if block==None: return
         if not isinstance(block,Creature): return
         if block.attack==None: return
-        if block.flying and not self.flying: return
+        if block.flying and not (self.flying or self.reach): return
         if self.color in block.protection: return
         self.blockEvent=Event(self,'Blocking',blockDelay,self.doneBlock)
         self.setNoneditable('attack')
@@ -71,7 +78,8 @@ class Creature(Spell,Damageable):
                 self.block.doDamage(sp,self)
                 self.doDamage(bp,self.block)
         self.block=None
-        self.setEditable('attack',self.setTarget,())
+        if not self.defender:
+            self.setEditable('attack',self.setTarget,())
         self.setEditable('block',self.setBlock,())
     def doDamage(self,amount,source):
         if source!=None and source.color in self.protection: return
@@ -173,6 +181,7 @@ class AirElemental(Creature):
     cost='3UU'
     power=4
     toughness=4
+    flying=True
 
 class ProdigalSorcerer(Creature):
     cost='2U'
@@ -206,3 +215,277 @@ class TundraWolves(Creature):
     power=1
     toughness=1
     
+class BenalishHero(Creature):
+    cost = 'W'
+    banding = True
+    power = 1
+    toughness = 1
+
+class BirdsOfParadise(Creature):
+    cost = 'G'
+    flying = True
+    toughness = 1
+    def doneCast(self):
+        Creature.doneCast(self)
+        for c in 'WRBUG':
+            Ability(self,'Get %s mana'%c,self.doIt, args=(c), delay=0.1, tap=1)
+    def doIt(self, c):
+        self.owner.addMana(c)
+
+class BogWraith(Creature):
+    cost = '3B'
+    power = 3
+    toughness = 3
+    swampwalk = True
+
+#class ClockworkBeast
+#class Clone
+
+class Cockatrice(Creature):
+    cost = '3GG'
+    power = 2
+    toughness = 4
+    flying = True
+
+    def doneCast(self):
+        Creature.doneCast(self)
+        self.addOverride(Creature.doneBlock, self.kill_blocker)
+
+    def doneBlock(self):
+        block = self.block
+        Creature.doneBlock(self)
+        block.destroy()
+
+    def kill_blocker(self, card, base_func):
+        if card.block is self:
+            base_func(card)
+            card.destroy()
+        else:
+            base_func(card)
+
+class CrawWurm(Creature):
+    cost = '4GG'
+    power = 6
+    toughness = 4
+
+#DemonicHordes
+#DragonWhelp
+#DrudgeSkeletons
+#DwarvenDemolitionTeam
+#DwarvenWarriors
+
+class EarthElemental(Creature):
+    cost = '3RR'
+    power = 4
+    toughness = 5
+
+class ElvishArchers(Creature):
+    cost = '1G'
+    power = 2
+    toughness = 1
+    firstStrike = True
+
+class FireElemental(Creature):
+    cost = '3RR'
+    power = 5
+    toughness = 4
+
+#ForceOfNature
+#FrozenShade
+
+class Fungusaur(Creature):
+    cost = '3G'
+    power = 2
+    toughness = 2
+
+    def doDamage(self, amount, source):
+        if not self.dead:
+            self.power += 1
+            self.toughness += 1
+
+#GaeasLiege
+
+class GiantSpider(Creature):
+    cost = '3G'
+    power = 2
+    toughness = 4
+    reach = True
+
+class GrayOgre(Creature):
+    cost = '2R'
+    power = 2
+    toughness = 2
+
+class GrizzlyBears(Creature):
+    cost = '1G'
+    power = 2
+    toughness = 2
+
+class HillGiant(Creature):
+    cost = '3R'
+    power = 3
+    toughness = 3
+
+class HurloonMinotaur(Creature):
+    cost = '1RR'
+    power = 2
+    toughness = 3
+
+class IronclawOrcs(Creature):
+    cost = '1R'
+    power = 2
+    toughness = 2
+
+    def setBlock(self, block):
+        if block is not None and block.power >= 2:
+            return
+        return Creature.setBlock(self, block)
+
+class IronrootTreefolk(Creature):
+    cost = '4G'
+    power = 3
+    toughness = 5
+
+class LlanowarElves(Creature):
+    cost = 'G'
+    power = 1
+    toughness = 1
+
+    def doneCast(self):
+        Creature.doneCast(self)
+        Ability(self,'Get G mana', lambda: self.owner.addMana('G'), delay=0.1, tap=1)
+
+class MahamotiDjinn(Creature):
+    cost = '4UU'
+    power = 5
+    toughness = 6
+    flying = True
+
+class MerfolkOfThePearlTrident(Creature):
+    cost = 'U'
+    power = 1
+    toughness = 1
+
+class MesaPegasus(Creature):
+    cost = '1W'
+    power = 1
+    toughness = 1
+    flying = True
+
+class MonsGoblinRaiders(Creature):
+    cost = 'R'
+    power = 1
+    toughness = 1
+
+class ObsianusGolem(Creature):
+    cost = '6'
+    power = 4
+    toughness = 6
+
+class OrcishArtillery(Creature):
+    cost = '1RR'
+    power = 1
+    toughness = 3
+
+    def doneCast(self):
+        Creature.doneCast(self)
+        TargettedAbility(self,'Do 2 damage to target, 3 to you',self.tim,tap=1)
+    def canSetTarget(self,target):
+        return isinstance(target,Damageable)
+    def tim(self):
+        self.target.doDamage(2,self)
+        self.owner.doDamage(3, self)
+
+class PearledUnicorn(Creature):
+    cost = '2W'
+    power = 2
+    toughness = 2
+
+class PhantomMonster(Creature):
+    cost = '3U'
+    power = 3
+    toughness = 3
+    flying = True
+
+class RocOfKherRidges(Creature):
+    cost = '3R'
+    power = 3
+    toughness = 3
+    flying = True
+
+class ScrybSprites(Creature):
+    cost = 'G'
+    power = 1
+    toughness = 1
+    flying = True
+
+class ShanodinDryads(Creature):
+    cost = 'G'
+    power = 1
+    toughness = 1
+    forestwalk = True
+
+class ThicketBasilisk(Creature):
+    cost = '3GG'
+    power = 2
+    toughness = 4
+
+    def doneCast(self):
+        Creature.doneCast(self)
+        self.addOverride(Creature.doneBlock, self.kill_blocker)
+
+    def doneBlock(self):
+        block = self.block
+        Creature.doneBlock(self)
+        block.destroy()
+
+    def kill_blocker(self, card, base_func):
+        if card.block is self:
+            base_func(card)
+            card.destroy()
+        else:
+            base_func(card)
+
+class TimberWolves(Creature):
+    cost = 'G'
+    power = 1
+    toughness = 1
+    banding = True
+
+class WallOfAir(Creature):
+    cost = '1UU'
+    power = 1
+    toughness = 5
+    defender = True
+
+class WallOfIce(Creature):
+    cost = '2G'
+    power = 0
+    toughness = 7
+    defender = True
+
+class WallOfStone(Creature):
+    cost = '1RR'
+    power = 0
+    toughness = 8
+    defender = True
+
+class WallOfSwords(Creature):
+    cost = '3W'
+    power = 3
+    toughness = 5
+    defender = True
+    flying = True
+
+class WallOfWood(Creature):
+    cost = 'G'
+    power = 0
+    toughness = 3
+    defender = True
+
+class WaterElemental(Creature):
+    cost='3UU'
+    power=5
+    toughness=4
+
+

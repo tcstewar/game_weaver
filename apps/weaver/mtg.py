@@ -3,7 +3,8 @@ from things import Thing,Player,Action,Event
 import random
 
 playerStartHealth=20
-playerStartMana=''#wwwwwwwbbbbbbbrrrrrggggggguuuuuu'
+playerStartMana=''
+
 
 untapDelay=30
 landDelay=30
@@ -23,19 +24,21 @@ dyingDelay=10
 abilityDelay=15
 spellForLifeDelay=10
 
+testing = True
 
-'''
-untapDelay=1
-landDelay=1
-manaBurnDelay=100
-cardDrawDelay=30
-summoningSicknessDelay=1
-creatureUntapDelay=1
-attackDelay=30
-blockDelay=10
-counterDelay=5
-castingDelay=1
-'''
+if testing:
+    playerStartMana = 'wwwwwwwbbbbbbbrrrrrggggggguuuuuu'
+
+    untapDelay=1
+    landDelay=1
+    manaBurnDelay=100
+    cardDrawDelay=30
+    summoningSicknessDelay=1
+    creatureUntapDelay=1
+    attackDelay=30
+    blockDelay=10
+    counterDelay=5
+    castingDelay=1
 
 class Damageable:
     pass
