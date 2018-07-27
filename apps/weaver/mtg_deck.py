@@ -6,102 +6,59 @@ from mtg_artifact import *
 from mtg_sorcery import *
 
 
-
-testDeck={
-    SavannahLions:10,
-    SerraAngel:10,
-    ScatheZombies:10,
-    }
-
-testDeck2={
-    Plains:10,
-    Fastbond:10,
-    }
-
-testDeck2={
-    Mountain:10,
-#    Forest:10,
-#    Lifetap:10,
-#    ManaFlare:10,
-    Disenchant:10,
-    WildGrowth:10,
-    }
-
-testDeck={
-    Pestilence:10,
-    SavannahLions:10,
-    ManaBarbs:10,
-    Swamp:10,
-    }
-
-testDeck3={
-    AncestralRecall:10,
-    Counterspell:10,
-    SerraAngel:10,
-    }
-
-testDeck3={
-    HolyStrength:10,
-    Plains:10,
-    SavannahLions:10,
-    Disenchant:10,
-    }
-
-testDeck4={
-    Plains:10,
-    Disenchant:10,
-    Armageddon:10,
-    AnkhOfMishra:10,
-    }
-
-testDeck2={
-    SavannahLions:10,
-    Forest:10,
-    AspectOfWolf:10,
-    LightningBolt:10,
-    Disenchant:10,
+one_of_everything={
+    AnkhOfMishra:1,
+    WoodenSphere:1,
+    CrystalRod:1,
+    IronStar:1,
+    IvoryCup:1,
+    ThroneOfBone:1,
+    SoulNet:1,
+    SolRing:1,
+    LibraryOfLeng:1,
+    HowlingMine:1,
+    BlackLotus:1,
+    MoxEmerald:1,
+    MoxRuby:1,
+    MoxJet:1,
+    MoxPearl:1,
+    MoxSapphire:1,
+    SavannahLions:1,
+    SerraAngel:1,
+    ScatheZombies:1,
+    AirElemental:1,
+    ProdigalSorcerer:1,
+    WhiteKnight:1,
+    BlackKnight:1,
+    TundraWolves:1,
+    WildGrowth:1,
+    Fastbond:1,
+    Lifetap:1,
+    ManaFlare:1,
+    ManaBarbs:1,
+    Pestilence:1,
+    HolyStrength:1,
+    AspectOfWolf:1,
+    BadMoon:1,
+    Crusade:1,
+    LandTax:1,
+    Counterspell:1,
+    AncestralRecall:1,
+    LightningBolt:1,
+    Disenchant:1,
+    SwordsToPlowshares:1,
+    Plains:1,
+    Mountain:1,
+    Island:1,
+    Forest:1,
+    Swamp:1,
+    Armageddon:1,
+    WrathOfGod:1,
+    Disintegrate:1,
     }
 
 
-testDeck4={
-    Disenchant:10,
-    ScatheZombies:10,
-    BadMoon:10,
-    }
-
-testDeck={
-    ProdigalSorcerer:10,
-    ScatheZombies:10,
-    }
-
-testDeck={
-    WoodenSphere:10,
-    Forest:10,
-    WildGrowth:10,
-    }
-
-testDeck={
-    HowlingMine:10,
-    LibraryOfLeng:10,
-    SolRing:10,
-    Disenchant:10,
-    IvoryCup:10,
-    }
-    
-testDeck={
-    Disintegrate:30,
-    BlackLotus:30,
-    }
-
-testDeck={
-    LandTax:20,
-    Plains:20,
-    Mountain:20,
-    }
-
-
-
-basicWhite={
+basic_white={
     Crusade:4,
     SerraAngel:4,
     SavannahLions:4,
