@@ -197,9 +197,28 @@ class Spell(Card):
 class MtGPlayer(Player,Damageable):
     _isDoneCasting=1
     maxCards=7
+    started=False
     def initPlayer(self):
         self.life=playerStartHealth
-        self._deck=Deck(self,'testDeck')
+        for k in dir(mtg_deck):
+            v = getattr(mtg_deck, k)
+            if isinstance(v, dict) and not k.startswith('_'):
+                Action(self, k, lambda k=k: self.set_deck(k), secret=1)
+
+    def set_deck(self, deck_name):
+        self._deck=Deck(self,deck_name)
+        for k, v in self._actions.items():
+            v.remove()
+        Action(self, 'Start Game', self.start)
+
+    def start(self):
+        for k, v in self._actions.items():
+            v.remove()
+        self.started = True
+        for p in self.getAllInPlay(MtGPlayer):
+            if not p.started:
+                Event(self, 'waiting for others to start', 0.01, self.start)
+                return
         self._hand=Hand(self)
         self._hasCastLand=0
         self._mana=Mana(self)

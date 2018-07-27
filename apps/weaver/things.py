@@ -249,7 +249,7 @@ class Thing(aoverride.AttributeOverrideable):
     def addOverride(self,base,func):
         self._overrides.append((base,func))
         override.add(base,func)
-            
+
 
       
         

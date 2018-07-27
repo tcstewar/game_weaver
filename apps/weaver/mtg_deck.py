@@ -114,6 +114,3 @@ basicWhite={
     MoxPearl:1,
     Plains:10,
     }
-
-testDeck=basicWhite
-    
