@@ -30,8 +30,8 @@ class WildGrowth(EnchantLand):
     cost='G'
     def onCast(self):
         self.addOverride(self.enchant.getMana,self.onTapForMana)
-    def onTapForMana(self,card,baseFnc):
-        baseFnc()
+    def onTapForMana(self,card,m, baseFnc):
+        baseFnc(m)
         if card==self.enchant:
             card.owner.addMana('G')
         
@@ -62,19 +62,19 @@ class ManaFlare(Enchantment):
     cost='2R'
     def doneCast(self):
         self.addOverride(Land.getMana,self.onTapForMana)
-    def onTapForMana(self,card,baseFnc):
+    def onTapForMana(self,card,m,baseFnc):
         if not card.tapped:
             card.owner.addMana(card.mana)
-        baseFnc(card)
+        baseFnc(card, m)
         
 class ManaBarbs(Enchantment):
     cost='3R'
     def doneCast(self):
         self.addOverride(Land.getMana,self.onTapForMana)
-    def onTapForMana(self,card,baseFnc):
+    def onTapForMana(self,card,m,baseFnc):
         if not card.tapped and card.owner!=None:
             card.owner.doDamage(1,self)
-        baseFnc(card)
+        baseFnc(card, m)
         
 class Pestilence(Enchantment):
     cost='2BB'

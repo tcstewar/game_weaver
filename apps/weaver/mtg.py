@@ -24,10 +24,8 @@ dyingDelay=10
 abilityDelay=15
 spellForLifeDelay=10
 
-testing = True
-
-if testing:
-    playerStartMana = 'wwwwwwwbbbbbbbrrrrrggggggguuuuuu'
+def set_debug_timing():
+    global untapDelay, landDelay, manaBurnDelay, cardDrawDelay, summoningSicknessDelay, creatureUntapDelay, attackDelay, blockDelay, counterDelay, castingDelay
 
     untapDelay=1
     landDelay=1
@@ -35,7 +33,7 @@ if testing:
     cardDrawDelay=30
     summoningSicknessDelay=1
     creatureUntapDelay=1
-    attackDelay=30
+    attackDelay=20
     blockDelay=10
     counterDelay=5
     castingDelay=1
@@ -213,8 +211,9 @@ class MtGPlayer(Player,Damageable):
         for k, v in self._actions.items():
             v.remove()
         Action(self, 'Start Game', self.start)
+        Action(self, 'Start Game (debug mode)', self.start, args=(True,))
 
-    def start(self):
+    def start(self, debug=False):
         for k, v in self._actions.items():
             v.remove()
         self.started = True
@@ -230,6 +229,12 @@ class MtGPlayer(Player,Damageable):
         for i in range(8):
             self.doDrawCard()
         self.drawCardEvent=Event(self,'Drawing Next Card',cardDrawDelay,self.doDrawCard,repeat=1)
+
+        if debug:
+            Action(self, 'Draw card', self.doDrawCard)
+            for m in 'BRGWU':
+                Action(self, 'Gain %s mana'%m, self.addMana, args=(m,))
+            set_debug_timing()
     def addMana(self,mana):
         self._mana.add(mana)
     def doDamage(self,amount,source):

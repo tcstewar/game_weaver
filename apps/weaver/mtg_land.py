@@ -9,12 +9,13 @@ class Land(Card):
     def cast(self,player):
         self.owner=player
         self._isDoneCasting=1
-        self.a1=Action(self,'Tap for %s' % self.mana,self.getMana)
+        for m in self.mana:
+            Action(self, 'Tap for %s' % m, self.getMana, args=(m,))
         player.setCastLand()
-    def getMana(self):
+    def getMana(self, m):
         if self.tapped: return
         if self.owner!=None:
-            self.owner.addMana(self.mana)
+            self.owner.addMana(m)
         self.tap()
 
 class Plains(Land):
@@ -32,4 +33,33 @@ class Forest(Land):
 class Swamp(Land):
     name='Swamp'
     mana='B'
-
+class Badlands(Land):
+    name='Badlands'
+    mana='BR'
+class Bayou(Land):
+    name='Bayou'
+    mana='BG'
+class Plateau(Land):
+    name='Plateau'
+    mana='RW'
+class Savannah(Land):
+    name='Savannah'
+    mana='GW'
+class Scrubland(Land):
+    name='Scrubland'
+    mana='BW'
+class Taiga(Land):
+    name='Taiga'
+    mana='GR'
+class TropicalIsland(Land):
+    name='Tropical Island'
+    mana='UG'
+class Tundra(Land):
+    name='Tundra'
+    mana='UW'
+class UndergroundSea(Land):
+    name='Underground Sea'
+    mana='BU'
+class VolcanicIsland(Land):
+    name='Volcanic Island'
+    mana='UR'

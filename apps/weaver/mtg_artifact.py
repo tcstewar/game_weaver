@@ -1,6 +1,7 @@
 from mtg import *
 
 from mtg_land import Land
+from mtg_creatures import Creature
 
 class Artifact(Spell):
     pass

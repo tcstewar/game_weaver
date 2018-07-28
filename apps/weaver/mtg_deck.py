@@ -36,6 +36,7 @@ one_of_everything={
     BogWraith:1,
     Cockatrice:1,
     CrawWurm:1,
+    DragonWhelp:1,
     EarthElemental:1,
     ElvishArchers:1,
     FireElemental:1,
@@ -88,6 +89,16 @@ one_of_everything={
     Island:1,
     Forest:1,
     Swamp:1,
+    Badlands:1,
+    Bayou:1,
+    Plateau:1,
+    Savannah:1,
+    Scrubland:1,
+    Taiga:1,
+    TropicalIsland:1,
+    Tundra:1,
+    UndergroundSea:1,
+    VolcanicIsland:1,
     Armageddon:1,
     WrathOfGod:1,
     Disintegrate:1,
@@ -109,6 +120,5 @@ basic_white={
     }
 
 test = {
-    LlanowarElves:10,
-    OrcishArtillery:10,
+    DragonWhelp:20,
     }

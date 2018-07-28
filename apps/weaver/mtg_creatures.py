@@ -24,14 +24,13 @@ class Creature(Spell,Damageable):
         self.attackEvent=None
         self.flying=self.flying
 
-
         self.setEditable('block',self.setBlock,())
-        Event(self,'Summoning Sickness',summoningSicknessDelay,self.doneSickness)
+        if not self.defender:
+            Event(self,'Summoning Sickness',summoningSicknessDelay,self.doneSickness)
     def doneSickness(self):
         self._hasSummoningSickness=0
         self.attack=None
-        if not self.defender:
-            self.setEditable('attack',self.setTarget,())
+        self.setEditable('attack',self.setTarget,())
     def setTarget(self,attack):
         if self.attack!=None: return
         if self.block!=None: return
@@ -224,6 +223,7 @@ class BenalishHero(Creature):
 class BirdsOfParadise(Creature):
     cost = 'G'
     flying = True
+    power = 0
     toughness = 1
     def doneCast(self):
         Creature.doneCast(self)
@@ -269,6 +269,30 @@ class CrawWurm(Creature):
     toughness = 4
 
 #DemonicHordes
+
+class DragonWhelp(Creature):
+    cost = '2RR'
+    power = 2
+    toughness = 3
+    flying = True
+    def doneCast(self):
+        Creature.doneCast(self)
+        self.boost_counter = 0
+        self.reset_event = None
+        Ability(self, 'Gain +1/+0', self.boost, delay=0.1, manaCost='R')
+    def boost(self):
+        self.boost_counter += 1
+        self.power += 1
+        if self.reset_event is None:
+            self.reset_event = Event(self, 'Reset', attackDelay*2, self.reset)
+    def reset(self):
+        if self.boost_counter >= 4:
+            self.die()
+        self.power -= self.boost_counter
+        self.boost_counter = 0
+
+
+
 #DragonWhelp
 #DrudgeSkeletons
 #DwarvenDemolitionTeam
