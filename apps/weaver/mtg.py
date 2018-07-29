@@ -190,7 +190,8 @@ class Spell(Card):
         self._isDoneCasting=1
         self.doneCast()
     
-        
+class Enchantment(Spell):
+    pass
 
 
 
@@ -219,7 +220,7 @@ class MtGPlayer(Player,Damageable):
         self.started = True
         for p in self.getAllInPlay(MtGPlayer):
             if not p.started:
-                Event(self, 'waiting for others to start', 0.01, self.start)
+                Event(self, 'waiting for others to start', 0.01, self.start, args=(debug,))
                 return
         self._hand=Hand(self)
         self._hasCastLand=0

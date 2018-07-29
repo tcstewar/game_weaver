@@ -4,9 +4,6 @@ from mtg_land import *
 from mtg_creatures import Creature
 import mtg_land
 
-class Enchantment(Spell):
-    pass
-
 class TargettedEnchantment(Targetted,Enchantment):
     def doneCast(self):
         self.enchant=self.target
