@@ -476,6 +476,15 @@ class TimberWolves(Creature):
     toughness = 1
     banding = True
 
+class VerduranEnchantress(Creature):
+    cost = '1GG'
+    power = 0
+    toughness = 2
+    def doneCast(self):
+        self.addOverride(Enchantment.cast, self.handle_draw)
+    def handle_draw(self):
+        self.owner.doDrawCard()
+
 class WallOfAir(Creature):
     cost = '1UU'
     power = 1

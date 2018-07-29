@@ -62,6 +62,7 @@ one_of_everything={
     ShanodinDryads:1,
     ThicketBasilisk:1,
     TimberWolves:1,
+    VerduranEnchantress:1,
     WallOfAir:1,
     WallOfIce:1,
     WallOfStone:1,
@@ -118,6 +119,40 @@ basic_white={
     MoxPearl:1,
     Plains:10,
     }
+
+enchantress = {
+    Cockatrice:2,
+    ElvishArchers:4,
+    LlanowarElves:4,
+    ThicketBasilisk:4,
+    VerduranEnchantress:4,
+    Forest:24,
+    Fastbond:1,
+    AspectOfWolf:2,
+    #Regeneration:2,
+    #LivingArtifact:3,
+    #Lure:4,
+    WildGrowth:4,
+    #JayemdaeTome:2,
+    }
+
+white_aggro = {
+    #NorthernPaladin:2,
+    SerraAngel:2,
+    BenalishHero:4,
+    MesaPegasus:4,
+    SavannahLions:4,
+    WhiteKnight:4,
+    Disenchant:2,
+    SwordsToPlowshares:4,
+    Armageddon:4,
+    Crusade:4,
+    Plains:26,
+    }
+
+
+
+
 
 test = {
     DragonWhelp:20,

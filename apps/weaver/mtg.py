@@ -210,10 +210,10 @@ class MtGPlayer(Player,Damageable):
         self._deck=Deck(self,deck_name)
         for k, v in self._actions.items():
             v.remove()
-        Action(self, 'Start Game', self.start)
+        Action(self, 'Start Game', self.start, args=(False,))
         Action(self, 'Start Game (debug mode)', self.start, args=(True,))
 
-    def start(self, debug=False):
+    def start(self, debug):
         for k, v in self._actions.items():
             v.remove()
         self.started = True
