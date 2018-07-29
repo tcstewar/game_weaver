@@ -66,12 +66,16 @@ class Card(Thing):
         self.tapped=0
         self._isDoneCasting=0
         self._abilities={}
+        self.untapEvent = None
     def tap(self):
-        self.tapped=1
-        self.untapEvent=Event(self,'Untapping',untapDelay,self.untap)        
+        if not self.tapped:
+            self.tapped=1
+            self.untapEvent=Event(self,'Untapping',untapDelay,self.untap)        
     def untap(self):
-        if hasattr(self,'untapEvent'): self.untapEvent.cancel()
-        self.tapped=0
+        if self.tapped:
+            if self.untapEvent: 
+                self.untapEvent.cancel()
+            self.tapped=0
 
 class Ability:
     def __init__(self,card,name,func,args=(),secret=0,manaCost='',delay=abilityDelay,tap=0,sacrifice=0):
@@ -99,6 +103,8 @@ class Ability:
             if self.tap:
                 self.card.tap()
             self.start()
+        else:
+            print('not enought mana')
     def start(self):
         Event(self.card,self.name,self.delay,self.doIt)
     def doIt(self):
@@ -179,13 +185,12 @@ class TargettedPumpable(Targetted):
     
     
 class Spell(Card):
-    _castDelay=castingDelay
     def canCast(self,player):
         return player.hasMana(self.cost)
     def cast(self,player):
         player.drainMana(self.cost)
         self.owner=player
-        Event(self,'Casting',self._castDelay,self.doneSpellCast)
+        Event(self,'Casting',castingDelay,self.doneSpellCast)
     def doneSpellCast(self):
         self._isDoneCasting=1
         self.doneCast()

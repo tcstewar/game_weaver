@@ -37,6 +37,7 @@ one_of_everything={
     Cockatrice:1,
     CrawWurm:1,
     DragonWhelp:1,
+    DrudgeSkeletons:1,
     EarthElemental:1,
     ElvishArchers:1,
     FireElemental:1,
@@ -155,5 +156,5 @@ white_aggro = {
 
 
 test = {
-    DragonWhelp:20,
+    DrudgeSkeletons:20,
     }

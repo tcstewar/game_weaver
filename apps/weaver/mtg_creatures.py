@@ -1,4 +1,6 @@
 from mtg import *
+
+import mtg
         
 class Creature(Spell,Damageable):
     flying=0
@@ -26,7 +28,7 @@ class Creature(Spell,Damageable):
 
         self.setEditable('block',self.setBlock,())
         if not self.defender:
-            Event(self,'Summoning Sickness',summoningSicknessDelay,self.doneSickness)
+            Event(self,'Summoning Sickness',mtg.summoningSicknessDelay,self.doneSickness)
     def doneSickness(self):
         self._hasSummoningSickness=0
         self.attack=None
@@ -39,16 +41,17 @@ class Creature(Spell,Damageable):
         if attack==self.owner: return
         self.setNoneditable('attack')
         self.setNoneditable('block')
-        self.attackEvent=Event(self,'Attacking',attackDelay,self.doneAttack)
+        self.attackEvent=Event(self,'Attacking',mtg.attackDelay,self.doneAttack)
         self.attack=attack
         self.tap()
         self.untapEvent.cancel()
+        self.untapEvent = None
     def doneAttack(self):
         self.attack.doDamage(self.power,self)
         self.attack=None
         self.setEditable('attack',self.setTarget,())
         self.setEditable('block',self.setBlock,())
-        self.untapEvent=Event(self,'Untapping',untapDelay,self.untap)
+        self.untapEvent=Event(self,'Untapping',mtg.untapDelay,self.untap)
     def setBlock(self,block):
         if self.tapped: return
         if self.block!=None: return
@@ -62,7 +65,7 @@ class Creature(Spell,Damageable):
         self.setNoneditable('block')
         self.block=block
     def doneBlock(self):
-        if self.block.owner!=None and not self.block.dead:
+        if self.block.attack != None and self.block.owner!=None and not self.block.dead:
             bp=self.block.power
             sp=self.power
             if self.firstStrike and not self.block.firstStrike:
@@ -84,7 +87,6 @@ class Creature(Spell,Damageable):
         if source!=None and source.color in self.protection: return
         self.damage+=amount
         if self.damage>=self.toughness:
-            print 'calling die'
             self.die()
         if not self.healEvent:
             self.healEvent=Event(self,'Healing',healingDelay,self.healAll)
@@ -114,6 +116,13 @@ class Creature(Spell,Damageable):
             self.dyingEvent=Event(self,'Dying',dyingDelay,self.goToGraveyard)
     def goToGraveyard(self):
         self.destroy()
+    def regenerate(self):
+        print(self.dyingEvent)
+        if self.dyingEvent is not None:
+            self.dyingEvent.cancel()
+            self.dyingEvent = None
+            self.dead = False
+        self.tap()
         
         
 
@@ -291,9 +300,15 @@ class DragonWhelp(Creature):
         self.power -= self.boost_counter
         self.boost_counter = 0
 
+class DrudgeSkeletons(Creature):
+    cost = '1B'
+    power = 1
+    toughness = 1
+    def doneCast(self):
+        Creature.doneCast(self)
+        Ability(self, 'Regenerate', self.regenerate, delay=0.1, manaCost='B')
 
 
-#DragonWhelp
 #DrudgeSkeletons
 #DwarvenDemolitionTeam
 #DwarvenWarriors
